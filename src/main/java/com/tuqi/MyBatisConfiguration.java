@@ -17,8 +17,9 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- * Created by xingxuan on 17/2/22.
+ * Created by tuqi on 17/2/22.
  */
+
 @Slf4j
 @Configuration
 @MapperScan(value = {"com.tuqi.mapper", "com.tuqi.mapper.ext"})
@@ -33,50 +34,50 @@ public class MyBatisConfiguration {
     @Value("${spring.datasource.password}")
     private String password;
 
-    @Value("${spring.datasource.driverClassName}")
+    @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
 
-    @Value("${spring.datasource.initialSize}")
-    private int initialSize;
-
-    @Value("${spring.datasource.minIdle}")
-    private int minIdle;
-
-    @Value("${spring.datasource.maxActive}")
-    private int maxActive;
-
-    @Value("${spring.datasource.maxWait}")
-    private int maxWait;
-
-    @Value("${spring.datasource.timeBetweenEvictionRunsMillis}")
-    private int timeBetweenEvictionRunsMillis;
-
-    @Value("${spring.datasource.minEvictableIdleTimeMillis}")
-    private int minEvictableIdleTimeMillis;
-
-    @Value("${spring.datasource.validationQuery}")
-    private String validationQuery;
-
-    @Value("${spring.datasource.testWhileIdle}")
-    private boolean testWhileIdle;
-
-    @Value("${spring.datasource.testOnBorrow}")
-    private boolean testOnBorrow;
-
-    @Value("${spring.datasource.testOnReturn}")
-    private boolean testOnReturn;
-
-    @Value("${spring.datasource.poolPreparedStatements}")
-    private boolean poolPreparedStatements;
-
-    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
-    private int maxPoolPreparedStatementPerConnectionSize;
-
-    @Value("${spring.datasource.filters}")
-    private String filters;
-
-    @Value("${spring.datasource.connectionProperties}")
-    private String connectionProperties;
+//    @Value("${spring.datasource.initialSize}")
+//    private int initialSize;
+//
+//    @Value("${spring.datasource.minIdle}")
+//    private int minIdle;
+//
+//    @Value("${spring.datasource.maxActive}")
+//    private int maxActive;
+//
+//    @Value("${spring.datasource.maxWait}")
+//    private int maxWait;
+//
+//    @Value("${spring.datasource.timeBetweenEvictionRunsMillis}")
+//    private int timeBetweenEvictionRunsMillis;
+//
+//    @Value("${spring.datasource.minEvictableIdleTimeMillis}")
+//    private int minEvictableIdleTimeMillis;
+//
+//    @Value("${spring.datasource.validationQuery}")
+//    private String validationQuery;
+//
+//    @Value("${spring.datasource.testWhileIdle}")
+//    private boolean testWhileIdle;
+//
+//    @Value("${spring.datasource.testOnBorrow}")
+//    private boolean testOnBorrow;
+//
+//    @Value("${spring.datasource.testOnReturn}")
+//    private boolean testOnReturn;
+//
+//    @Value("${spring.datasource.poolPreparedStatements}")
+//    private boolean poolPreparedStatements;
+//
+//    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
+//    private int maxPoolPreparedStatementPerConnectionSize;
+//
+//    @Value("${spring.datasource.filters}")
+//    private String filters;
+//
+//    @Value("${spring.datasource.connectionProperties}")
+//    private String connectionProperties;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
@@ -89,24 +90,24 @@ public class MyBatisConfiguration {
         datasource.setDriverClassName(driverClassName);
 
         //configuration
-        datasource.setInitialSize(initialSize);
-        datasource.setMinIdle(minIdle);
-        datasource.setMaxActive(maxActive);
-        datasource.setMaxWait(maxWait);
-        datasource.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
-        datasource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
-        datasource.setValidationQuery(validationQuery);
-        datasource.setTestWhileIdle(testWhileIdle);
-        datasource.setTestOnBorrow(testOnBorrow);
-        datasource.setTestOnReturn(testOnReturn);
-        datasource.setPoolPreparedStatements(poolPreparedStatements);
-        datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
-        try {
-            datasource.setFilters(filters);
-        } catch (SQLException e) {
-            log.error("druid configuration initialization filter", e);
-        }
-        datasource.setConnectionProperties(connectionProperties);
+//        datasource.setInitialSize(initialSize);
+//        datasource.setMinIdle(minIdle);
+//        datasource.setMaxActive(maxActive);
+//        datasource.setMaxWait(maxWait);
+//        datasource.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+//        datasource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+//        datasource.setValidationQuery(validationQuery);
+//        datasource.setTestWhileIdle(testWhileIdle);
+//        datasource.setTestOnBorrow(testOnBorrow);
+//        datasource.setTestOnReturn(testOnReturn);
+//        datasource.setPoolPreparedStatements(poolPreparedStatements);
+//        datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+//        try {
+//            datasource.setFilters(filters);
+//        } catch (SQLException e) {
+//            log.error("druid configuration initialization filter", e);
+//        }
+//        datasource.setConnectionProperties(connectionProperties);
 
         return datasource;
     }
