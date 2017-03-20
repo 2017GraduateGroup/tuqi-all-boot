@@ -146,13 +146,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.config</include>
-					<include>**/*.txt</include>
-					<include>**/*.xml</include>
-					<include>**/*.html</include>
-				</includes>
 			</resource>
 		</resources>
 	</build>
