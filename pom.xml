@@ -44,6 +44,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!--thymeleaf支持-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 		<!--热启动支持-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -146,6 +151,7 @@
 					<include>**/*.config</include>
 					<include>**/*.txt</include>
 					<include>**/*.xml</include>
+					<include>**/*.html</include>
 				</includes>
 			</resource>
 		</resources>
