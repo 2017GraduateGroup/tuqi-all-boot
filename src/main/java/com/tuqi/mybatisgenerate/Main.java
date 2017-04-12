@@ -36,7 +36,7 @@ public class Main {
             return;
         }
         System.out.println("is generating ...");
-        MyBatisGenCore.batchGen(tables, "db_tuqi.config");
+        MyBatisGenCore.batchGen(tables, "db.config");
         System.out.print("done!");
     }
 }

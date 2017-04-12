@@ -1,0 +1,24 @@
+.container {
+	margin-top: 30px;
+}
+
+.container .current-date {
+	color: #999;
+	font-weight: 700;
+}
+
+table th:nth-child(6),
+table th:nth-child(7) {
+	color: red;
+}
+
+table th {
+	cursor: default;
+	text-align: center;
+	width: 30px;
+	transition: 300ms all ease-in;
+}
+
+tbody th:hover {
+	background-color: #E5E3E3;
+}
