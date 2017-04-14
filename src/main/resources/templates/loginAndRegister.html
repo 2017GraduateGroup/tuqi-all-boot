@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <script type="text/javascript" src="/node_modules/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/node_modules/element-ui/lib/theme-default/index.css">
+    <script type="text/javascript" src="/node_modules/element-ui/lib/index.js"></script>
+    <style type="text/css">
+        #app {
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        }
+        #app .header {
+            width: 400px;
+            text-align: center;
+            margin: 5% auto;
+            color: #999;
+        }
+        #app .login,
+        #app .method,
+        #app .register {
+            width: 300px;
+            text-align: center;
+            margin: 10px auto;
+        }
+        #app .method {
+            margin-top: 3%;
+        }
+        .el-input {
+            margin: 15px 0;
+        }
+        .el-input .el-input-group__prepend {
+            width: 100px;
+            color: #999;
+            font-weight: 600;
+        }
+        .el-tabs__nav {
+            float: none;
+            margin: 0 auto;
+        }
+        .el-tabs__active-bar {
+            left: 50%;
+            margin-left: -60px;
+        }
+        .el-button {
+            margin-top: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            width: 250px;
+            letter-spacing: 5px;
+        }
+        .forget-passwd {
+            float: right;
+            font-size: 0.8em;
+            color: #CCC;
+            cursor: pointer;
+        }
+        .forget-passwd:hover {
+            color: #4893E8;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <div class="header">
+        <h1>{{ welMsg }}</h1>
+    </div>
+    <div class="method">
+        <template>
+            <el-tabs @tab-click="show">
+                <el-tab-pane label="登录"></el-tab-pane>
+                <el-tab-pane label="注册"></el-tab-pane>
+            </el-tabs>
+        </template>
+    </div>
+    <form id="loginForm" method="post" action="user/userLogin.do">
+        <div class="login" v-if="isShow">
+            <el-input label="username" placeholder="Please enter username" v-model="usernameInput" name="usernameInput">
+                <template slot="prepend">{{ username }}</template>
+            </el-input>
+            <el-input label="passwd" placeholder="Please enter password" v-model="passwdInput" type="password" name="passwdInput">
+                <template slot="prepend">{{ passwd }}</template>
+            </el-input>
+            <el-button class="el-button--primary" native-type="submit" @click="checkLogin">登录</el-button>
+            <p class="forget-passwd">忘记密码</p>
+        </div>
+    </form>
+
+    <form id="registerForm" method="post" action="user/userRegister.do">
+        <div class="register" v-if="!isShow">
+            <el-input label="username" placeholder="请输入用户名" v-model="rUsename" name="rUsename">
+                <template slot="prepend">{{ username }}</template>
+            </el-input>
+            <el-input label="passwd" placeholder="请输入昵称" v-model="rNickname" name="rNickname">
+                <template slot="prepend">昵&nbsp;称</template>
+            </el-input>
+            <el-input label="passwd" placeholder="请输入密码" v-model="rPasswd" type="password" name="rPasswd">
+                <template slot="prepend">{{ passwd }}</template>
+            </el-input>
+            <el-input label="passwd" placeholder="请确认密码" v-model="ryPasswd" type="password" name="">
+                <template slot="prepend">确认密码</template>
+            </el-input>
+            <el-select placeholder="职位" v-model="rPosition" name="rPosition" th:field="${position}">
+                <el-option th:each="position:${userPositionDOList}" th:value="${position.positionId}" th:text="${position.positionName}">position select</el-option>
+            </el-select>
+            <el-button class="el-button--primary" native-type="submit" @click="checkRegister">注册</el-button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            welMsg: 'Welcome To Login In',
+            username: '用户名',
+            passwd: '密  码',
+            isShow: true,
+            usernameInput: '',
+            passwdInput:'',
+            rUsename: '',
+            rNickname: '',
+            rPasswd: '',
+            ryPasswd: '',
+            rPosition: ''
+        },
+        methods: {
+            show: function(tab) {
+                if (tab.index == "0") {
+                    this.isShow = true;
+                    this.welMsg = 'Schedule System Login'
+                }
+                if (tab.index == "1") {
+                    this.isShow = false;
+                    this.welMsg = 'Schedule System Regist'
+                }
+            },
+            open: function() {
+                this.$message({
+                    message: '请填写完整表格',
+                    type: 'warning'
+                })
+            },
+            checkRegister: function() {
+                if (this.rUsename == '' || this.rPasswd == '' || this.ryPasswd == '' || this.rPosition == '') {
+                    this.open()
+                }
+            },
+            checkLogin: function() {
+                if (this.usernameInput == '' || this.passwdInput == '') {
+                    this.open()
+                }
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

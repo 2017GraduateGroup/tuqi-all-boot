@@ -20,11 +20,6 @@ public class UserDO implements Serializable {
     private Long userId;
 
     /**
-     * This field corresponds to the database column user.password
-     */
-    private String password;
-
-    /**
      * This field corresponds to the database column user.user_name
      */
     private String userName;
@@ -35,9 +30,9 @@ public class UserDO implements Serializable {
     private String userNickName;
 
     /**
-     * This field corresponds to the database column user.user_position
+     * This field corresponds to the database column user.password
      */
-    private String userPosition;
+    private String password;
 
     /**
      * This field corresponds to the database column user.gmt_create
@@ -48,5 +43,10 @@ public class UserDO implements Serializable {
      * This field corresponds to the database column user.gmt_modified
      */
     private Date gmtModified;
+
+    /**
+     * This field corresponds to the database column user.user_position_id
+     */
+    private Integer userPositionId;
 
 }
