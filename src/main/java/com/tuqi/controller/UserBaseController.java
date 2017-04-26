@@ -7,6 +7,7 @@ import com.tuqi.util.MyMD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,11 +48,12 @@ public class UserBaseController {
     }
     //用户登录
     @RequestMapping("userLogin")
-    public String userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput){
+    public String userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, Model model){
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
             userQuery.createCriteria().andUserNameEqualTo(usernameInput);
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
+            model.addAttribute("currentUser", userDOList.get(0));
             if(StringUtils.isNotBlank(passwdInput)){
                 String mdPwd = MyMD5Util.code(passwdInput);
                 if(userDOList.get(0).getPassword().equals(mdPwd)){
