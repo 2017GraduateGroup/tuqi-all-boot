@@ -58,6 +58,15 @@ public class DailyRecordController {
         return "/dailyRecordList";
     }
 
+    /**
+     * 更新日志
+     * @param userId
+     * @param title
+     * @param content
+     * @param remarks
+     * @return
+     */
+    @RequestMapping("updateDailyRecord")
     public String updateDailyRecord(@RequestParam String userId, String title, String content ,String remarks){
         DailyRecordDO dailyRecordDO;
         if(StringUtils.isNotBlank(userId)){
@@ -80,11 +89,33 @@ public class DailyRecordController {
         return "/showDailyRecord";
     }
 
+    /**
+     * 删除日志
+     * @param dailyRecordNum
+     * @return
+     */
+    @RequestMapping("deleteDailyRecord")
     public String deleteDailyRecord(@RequestParam String dailyRecordNum){
         if(StringUtils.isNotBlank(dailyRecordNum)){
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordidEqualTo(Long.valueOf(dailyRecordNum));
             dailyRecordManager.deleteByQuery(dailyRecordQuery);
+        }
+        return "/showDailyRecord";
+    }
+
+    /**
+     * 查看所有日志
+     * @param userId
+     * @param model
+     * @return
+     */
+    @RequestMapping("queryDailyRecord")
+    public String queryDailyRecord(@RequestParam String userId, Model model){
+        if(StringUtils.isNotBlank(userId)){
+            DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
+            dailyRecordQuery.createCriteria().andUserUserIdEqualTo(Long.valueOf(userId));
+            dailyRecordManager.selectByQuery(dailyRecordQuery);
         }
         return "/showDailyRecord";
     }
