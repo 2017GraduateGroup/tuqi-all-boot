@@ -2,6 +2,7 @@ package com.tuqi.controller;
 
 import com.tuqi.domain.model.ProgrammeDO;
 import com.tuqi.domain.model.UserDO;
+import com.tuqi.domain.query.ProgrammeQuery;
 import com.tuqi.manager.ProgrammeManager;
 import com.tuqi.manager.UserManager;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static com.tuqi.util.ConstantUtil.ISEFFECTIVE;
 
 /**
  * Created by Xianrui Ke on 2017/4/26.
@@ -45,10 +49,11 @@ public class ProgrammeController {
         if(StringUtils.isNotBlank(content)){
             programmeDO.setContent(content);
         }
+        programmeDO.setStatus(ISEFFECTIVE);
         programmeDO.setProgrammeTime(getNowTime());
         model.addAttribute("user", userDO);
         programmeManager.insertSelective(programmeDO);
-        return "默认首页";
+        return "/index";
     }
 
     /**
@@ -68,7 +73,7 @@ public class ProgrammeController {
             programmeDO.setContent(content);
         }
         programmeManager.updateByPrimaryKeySelective(programmeDO);
-        return "";
+        return "/showProgrammeList";
     }
 
     /**
@@ -82,11 +87,24 @@ public class ProgrammeController {
         if(StringUtils.isNotBlank(programmeId)){
             programmeManager.deleteByPrimaryKey(programmeManager.selectByPrimaryKey(Long.valueOf(programmeId)));
         }
-        return "";
+        return "/index";
     }
 
-    public String queryProgramme(){
-        return "";
+    /**
+     * 查询当前用户的所有日程安排
+     * @param userId
+     * @param model
+     * @return
+     */
+    @RequestMapping("queryProgramme")
+    public String queryProgramme(@RequestParam String userId, Model model){
+        ProgrammeQuery programmeQuery = new ProgrammeQuery();
+        if(StringUtils.isNotBlank(userId)){
+            programmeQuery.createCriteria().andProgramUserIdEqualTo(Long.valueOf(userId));
+        }
+        List<ProgrammeDO> programmeList = programmeManager.selectByQuery(programmeQuery);
+        model.addAllAttributes(programmeList);
+        return "/showProgrammeList";
     }
 
     /**

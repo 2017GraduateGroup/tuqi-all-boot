@@ -77,10 +77,10 @@
     </div>
     <form id="loginForm" method="post" action="user/userLogin.do">
         <div class="login" v-if="isShow">
-            <el-input label="username" placeholder="Please enter username" v-model="usernameInput" name="usernameInput">
+            <el-input label="username" placeholder="请输入用户名" v-model="usernameInput" name="usernameInput">
                 <template slot="prepend">{{ username }}</template>
             </el-input>
-            <el-input label="passwd" placeholder="Please enter password" v-model="passwdInput" type="password" name="passwdInput">
+            <el-input label="passwd" placeholder="请输入密码" v-model="passwdInput" type="password" name="passwdInput">
                 <template slot="prepend">{{ passwd }}</template>
             </el-input>
             <el-button class="el-button--primary" native-type="submit" @click="checkLogin">登录</el-button>
