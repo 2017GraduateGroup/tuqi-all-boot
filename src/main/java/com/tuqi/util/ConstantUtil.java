@@ -6,7 +6,7 @@ package com.tuqi.util;
 public class ConstantUtil {
 
     //有效
-    public static String ISEFFECTIVE = "1";
+    public static final String ISEFFECTIVE = "1";
     //无效
-    public static String ISNOTEFFECTIVE = "0";
+    public static final String ISNOTEFFECTIVE = "0";
 }
