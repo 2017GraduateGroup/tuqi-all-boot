@@ -9,4 +9,6 @@ public class ConstantUtil {
     public static final String ISEFFECTIVE = "1";
     //无效
     public static final String ISNOTEFFECTIVE = "0";
+
+
 }

@@ -47,63 +47,63 @@ public class DailyRecordQuery extends BaseQuery implements Serializable {
             super();
         }
 
-        public Criteria andRecordid,userUserIdIsNull() {
-            addCriterion("recordId,user_user_id is null");
+        public Criteria andRecordidIsNull() {
+            addCriterion("recordId is null");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdIsNotNull() {
-            addCriterion("recordId,user_user_id is not null");
+        public Criteria andRecordidIsNotNull() {
+            addCriterion("recordId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdEqualTo(Long value) {
-            addCriterion("recordId,user_user_id =", value, "id");
+        public Criteria andRecordidEqualTo(Long value) {
+            addCriterion("recordId =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdNotEqualTo(Long value) {
-            addCriterion("recordId,user_user_id <>", value, "id");
+        public Criteria andRecordidNotEqualTo(Long value) {
+            addCriterion("recordId <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria anRecordid,userUserIdGreaterThan(Long value) {
-            addCriterion("recordId,user_user_id >", value, "id");
+        public Criteria anRecordidGreaterThan(Long value) {
+            addCriterion("recordId >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("recordId,user_user_id >=", value, "id");
+        public Criteria andRecordidGreaterThanOrEqualTo(Long value) {
+            addCriterion("recordId >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdLessThan(Long value) {
-            addCriterion("recordId,user_user_id <", value, "id");
+        public Criteria andRecordidLessThan(Long value) {
+            addCriterion("recordId <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdLessThanOrEqualTo(Long value) {
-            addCriterion("recordId,user_user_id <=", value, "id");
+        public Criteria andRecordidLessThanOrEqualTo(Long value) {
+            addCriterion("recordId <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdIn(List<Long> values) {
-            addCriterion("recordId,user_user_id in", values, "id");
+        public Criteria andRecordidIn(List<Long> values) {
+            addCriterion("recordId in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdNotIn(List<Long> values) {
-            addCriterion("recordId,user_user_id not in", values, "id");
+        public Criteria andRecordidNotIn(List<Long> values) {
+            addCriterion("recordId not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdBetween(Long value1, Long value2) {
-            addCriterion("recordId,user_user_id between", value1, value2, "id");
+        public Criteria andRecordidBetween(Long value1, Long value2) {
+            addCriterion("recordId between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andRecordid,userUserIdNotBetween(Long value1, Long value2) {
-            addCriterion("recordId,user_user_id not between", value1, value2, "id");
+        public Criteria andRecordidNotBetween(Long value1, Long value2) {
+            addCriterion("recordId not between", value1, value2, "id");
             return (Criteria) this;
         }
 
@@ -224,78 +224,6 @@ public class DailyRecordQuery extends BaseQuery implements Serializable {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidIsNull() {
-            addCriterion("recordid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidIsNotNull() {
-            addCriterion("recordid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidEqualTo(Long value) {
-            addCriterion("recordid =", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidNotEqualTo(Long value) {
-            addCriterion("recordid <>", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidGreaterThan(Long value) {
-            addCriterion("recordid >", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidGreaterThanOrEqualTo(Long value) {
-            addCriterion("recordid >=", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidLessThan(Long value) {
-            addCriterion("recordid <", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidLessThanOrEqualTo(Long value) {
-            addCriterion("recordid <=", value, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidLike(Long value) {
-            String strValue = "%"+value.toString()+"%";
-            addCriterion("recordid like", strValue, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidNotLike(Long value) {
-            String strValue = "%"+value.toString()+"%";
-            addCriterion("recordid not like", strValue, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidIn(List<Long> values) {
-            addCriterion("recordid in", values, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidNotIn(List<Long> values) {
-            addCriterion("recordid not in", values, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidBetween(Long value1, Long value2) {
-            addCriterion("recordid between", value1, value2, "recordid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordidNotBetween(Long value1, Long value2) {
-            addCriterion("recordid not between", value1, value2, "recordid");
             return (Criteria) this;
         }
 
@@ -587,75 +515,75 @@ public class DailyRecordQuery extends BaseQuery implements Serializable {
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdIsNull() {
-            addCriterion("user_user_id is null");
+        public Criteria andRecordUserIdIsNull() {
+            addCriterion("record_user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdIsNotNull() {
-            addCriterion("user_user_id is not null");
+        public Criteria andRecordUserIdIsNotNull() {
+            addCriterion("record_user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdEqualTo(Long value) {
-            addCriterion("user_user_id =", value, "userUserId");
+        public Criteria andRecordUserIdEqualTo(Long value) {
+            addCriterion("record_user_id =", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdNotEqualTo(Long value) {
-            addCriterion("user_user_id <>", value, "userUserId");
+        public Criteria andRecordUserIdNotEqualTo(Long value) {
+            addCriterion("record_user_id <>", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdGreaterThan(Long value) {
-            addCriterion("user_user_id >", value, "userUserId");
+        public Criteria andRecordUserIdGreaterThan(Long value) {
+            addCriterion("record_user_id >", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("user_user_id >=", value, "userUserId");
+        public Criteria andRecordUserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("record_user_id >=", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdLessThan(Long value) {
-            addCriterion("user_user_id <", value, "userUserId");
+        public Criteria andRecordUserIdLessThan(Long value) {
+            addCriterion("record_user_id <", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdLessThanOrEqualTo(Long value) {
-            addCriterion("user_user_id <=", value, "userUserId");
+        public Criteria andRecordUserIdLessThanOrEqualTo(Long value) {
+            addCriterion("record_user_id <=", value, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdLike(Long value) {
+        public Criteria andRecordUserIdLike(Long value) {
             String strValue = "%"+value.toString()+"%";
-            addCriterion("user_user_id like", strValue, "userUserId");
+            addCriterion("record_user_id like", strValue, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdNotLike(Long value) {
+        public Criteria andRecordUserIdNotLike(Long value) {
             String strValue = "%"+value.toString()+"%";
-            addCriterion("user_user_id not like", strValue, "userUserId");
+            addCriterion("record_user_id not like", strValue, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdIn(List<Long> values) {
-            addCriterion("user_user_id in", values, "userUserId");
+        public Criteria andRecordUserIdIn(List<Long> values) {
+            addCriterion("record_user_id in", values, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdNotIn(List<Long> values) {
-            addCriterion("user_user_id not in", values, "userUserId");
+        public Criteria andRecordUserIdNotIn(List<Long> values) {
+            addCriterion("record_user_id not in", values, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdBetween(Long value1, Long value2) {
-            addCriterion("user_user_id between", value1, value2, "userUserId");
+        public Criteria andRecordUserIdBetween(Long value1, Long value2) {
+            addCriterion("record_user_id between", value1, value2, "recordUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserUserIdNotBetween(Long value1, Long value2) {
-            addCriterion("user_user_id not between", value1, value2, "userUserId");
+        public Criteria andRecordUserIdNotBetween(Long value1, Long value2) {
+            addCriterion("record_user_id not between", value1, value2, "recordUserId");
             return (Criteria) this;
         }
 

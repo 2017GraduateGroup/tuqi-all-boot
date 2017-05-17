@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -46,10 +47,11 @@ public class DailyRecordController {
             if(StringUtils.isNotBlank(remarks)){
                 recordDO.setRemarks(remarks);
             }
+            recordDO.setRecordUserId(Long.valueOf(userId));
             recordDO.setStatus(ISEFFECTIVE);
             dailyRecordManager.insertSelective(recordDO);
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-            dailyRecordQuery.createCriteria().andUserUserIdEqualTo(Long.valueOf(userId));
+            dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
             List<DailyRecordDO> dailyRecordDOS = dailyRecordManager.selectByQuery(dailyRecordQuery);
             model.addAllAttributes(dailyRecordDOS);
         } else{
@@ -71,7 +73,7 @@ public class DailyRecordController {
         DailyRecordDO dailyRecordDO;
         if(StringUtils.isNotBlank(userId)){
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-            dailyRecordQuery.createCriteria().andUserUserIdEqualTo(Long.valueOf((userId)));
+            dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf((userId)));
             dailyRecordDO = dailyRecordManager.selectByQuery(dailyRecordQuery).get(0);
             if(null != dailyRecordDO){
                 if(StringUtils.isNotBlank(title)){
@@ -107,16 +109,18 @@ public class DailyRecordController {
     /**
      * 查看所有日志
      * @param userId
-     * @param model
      * @return
      */
+    @ResponseBody
     @RequestMapping("queryDailyRecord")
-    public String queryDailyRecord(@RequestParam String userId, Model model){
-        if(StringUtils.isNotBlank(userId)){
+    public List queryDailyRecord(@RequestParam String userId){
+        if(StringUtils.isNotBlank(userId)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-            dailyRecordQuery.createCriteria().andUserUserIdEqualTo(Long.valueOf(userId));
-            dailyRecordManager.selectByQuery(dailyRecordQuery);
+            dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
+            List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
+            return dailyRecordDOList;
+        }else{
+            return null;
         }
-        return "/showDailyRecord";
     }
 }

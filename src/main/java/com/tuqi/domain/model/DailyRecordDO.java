@@ -50,8 +50,8 @@ public class DailyRecordDO implements Serializable {
     private Date gmtModified;
 
     /**
-     * This field corresponds to the database column daily_record.user_user_id
+     * This field corresponds to the database column daily_record.record_user_id
      */
-    private Long userUserId;
+    private Long recordUserId;
 
 }

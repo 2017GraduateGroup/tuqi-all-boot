@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.websocket.Session;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -48,12 +51,13 @@ public class UserBaseController {
     }
     //用户登录
     @RequestMapping("userLogin")
-    public String userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, Model model){
+    public String userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, HttpServletRequest request, Model model){
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
             userQuery.createCriteria().andUserNameEqualTo(usernameInput);
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
             model.addAttribute("currentUser", userDOList.get(0));
+            request.getSession().setAttribute("currentUserId", userDOList.get(0).getUserId());
             if(StringUtils.isNotBlank(passwdInput)){
                 String mdPwd = MyMD5Util.code(passwdInput);
                 if(userDOList.get(0).getPassword().equals(mdPwd)){

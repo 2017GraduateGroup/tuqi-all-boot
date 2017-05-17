@@ -5,6 +5,7 @@ import com.tuqi.domain.model.UserDO;
 import com.tuqi.domain.query.ProgrammeQuery;
 import com.tuqi.manager.ProgrammeManager;
 import com.tuqi.manager.UserManager;
+import com.tuqi.util.ProgrammeType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,8 @@ public class ProgrammeController {
      * @return
      */
     @RequestMapping("addProgramme")
-    public String addProgramme(@RequestParam String userId, @RequestParam String content, Model model){
+    public String addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
+                               @RequestParam String programmeType, Model model){
         UserDO userDO = new UserDO();
         ProgrammeDO programmeDO = new ProgrammeDO();
         if(StringUtils.isNotBlank(userId)){
@@ -49,8 +51,17 @@ public class ProgrammeController {
         if(StringUtils.isNotBlank(content)){
             programmeDO.setContent(content);
         }
+        if(StringUtils.isNotBlank(programmeTime)){
+            programmeDO.setProgrammeTime(programmeTime);
+        }
+        if(StringUtils.isNotBlank(programmeType)){
+            for (ProgrammeType programmeTypeItem : ProgrammeType.values()) {
+                if(StringUtils.equals(programmeType, programmeTypeItem.getDesc())){
+                    programmeDO.setProgramTypeId(programmeTypeItem.getCode());
+                }
+            }
+        }
         programmeDO.setStatus(ISEFFECTIVE);
-        programmeDO.setProgrammeTime(getNowTime());
         model.addAttribute("user", userDO);
         programmeManager.insertSelective(programmeDO);
         return "/index";
@@ -107,12 +118,12 @@ public class ProgrammeController {
         return "/showProgrammeList";
     }
 
-    /**
-     * 获取当前时间
-     * @return
-     */
-    private String getNowTime(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(new Date());
-    }
+//    /**
+//     * 获取当前时间
+//     * @return
+//     */
+//    private String getNowTime(){
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        return simpleDateFormat.format(new Date());
+//    }
 }
