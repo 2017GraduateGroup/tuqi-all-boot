@@ -26,6 +26,7 @@ public class DailyRecordController {
 
     /**
      * 添加日志
+     *
      * @param userId
      * @param title
      * @param content
@@ -35,16 +36,16 @@ public class DailyRecordController {
      */
     @RequestMapping("addDailyRecord")
     public String addDailyRecord(@RequestParam String userId, @RequestParam String title,
-                                 @RequestParam String content, @RequestParam String remarks, Model model){
-        if(StringUtils.isNotBlank(userId)){
+                                 @RequestParam String content, @RequestParam String remarks, Model model) {
+        if (StringUtils.isNotBlank(userId)) {
             DailyRecordDO recordDO = new DailyRecordDO();
-            if(StringUtils.isNotBlank(title)){
+            if (StringUtils.isNotBlank(title)) {
                 recordDO.setTitle(title);
             }
-            if(StringUtils.isNotBlank(content)){
+            if (StringUtils.isNotBlank(content)) {
                 recordDO.setContent(content);
             }
-            if(StringUtils.isNotBlank(remarks)){
+            if (StringUtils.isNotBlank(remarks)) {
                 recordDO.setRemarks(remarks);
             }
             recordDO.setRecordUserId(Long.valueOf(userId));
@@ -54,14 +55,15 @@ public class DailyRecordController {
             dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
             List<DailyRecordDO> dailyRecordDOS = dailyRecordManager.selectByQuery(dailyRecordQuery);
             model.addAllAttributes(dailyRecordDOS);
-        } else{
-           return "/showDailyRecord";
+        } else {
+            return "/showDailyRecord";
         }
         return "/dailyRecordList";
     }
 
     /**
      * 更新日志
+     *
      * @param userId
      * @param title
      * @param content
@@ -69,36 +71,35 @@ public class DailyRecordController {
      * @return
      */
     @RequestMapping("updateDailyRecord")
-    public String updateDailyRecord(@RequestParam String userId, String title, String content ,String remarks){
-        DailyRecordDO dailyRecordDO;
-        if(StringUtils.isNotBlank(userId)){
-            DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-            dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf((userId)));
-            dailyRecordDO = dailyRecordManager.selectByQuery(dailyRecordQuery).get(0);
-            if(null != dailyRecordDO){
-                if(StringUtils.isNotBlank(title)){
+    public String updateDailyRecord(@RequestParam String userId, @RequestParam String dailyRecordId, String title, String content, String remarks) {
+        if (StringUtils.isNotBlank(dailyRecordId)) {
+            DailyRecordDO dailyRecordDO = dailyRecordManager.selectByPrimaryKey(Long.valueOf(dailyRecordId));
+            if (null != dailyRecordDO) {
+                if (StringUtils.isNotBlank(title)) {
                     dailyRecordDO.setTitle(title);
                 }
-                if(StringUtils.isNotBlank(content)){
+                if (StringUtils.isNotBlank(content)) {
                     dailyRecordDO.setContent(content);
                 }
-                if(StringUtils.isNotBlank(remarks)){
+                if (StringUtils.isNotBlank(remarks)) {
                     dailyRecordDO.setRemarks(remarks);
                 }
+                dailyRecordManager.updateByPrimaryKeySelective(dailyRecordDO);
             }
-            dailyRecordManager.updateByPrimaryKeySelective(dailyRecordDO);
         }
+
         return "/showDailyRecord";
     }
 
     /**
      * 删除日志
+     *
      * @param dailyRecordNum
      * @return
      */
     @RequestMapping("deleteDailyRecord")
-    public String deleteDailyRecord(@RequestParam String dailyRecordNum){
-        if(StringUtils.isNotBlank(dailyRecordNum)){
+    public String deleteDailyRecord(@RequestParam String dailyRecordNum) {
+        if (StringUtils.isNotBlank(dailyRecordNum)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordidEqualTo(Long.valueOf(dailyRecordNum));
             dailyRecordManager.deleteByQuery(dailyRecordQuery);
@@ -108,18 +109,19 @@ public class DailyRecordController {
 
     /**
      * 查看所有日志
+     *
      * @param userId
      * @return
      */
     @ResponseBody
     @RequestMapping("queryDailyRecord")
-    public List queryDailyRecord(@RequestParam String userId){
-        if(StringUtils.isNotBlank(userId)) {
+    public List queryDailyRecord(@RequestParam String userId) {
+        if (StringUtils.isNotBlank(userId)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
             List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
             return dailyRecordDOList;
-        }else{
+        } else {
             return null;
         }
     }

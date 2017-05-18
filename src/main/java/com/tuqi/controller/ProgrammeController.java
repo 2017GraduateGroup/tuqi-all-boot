@@ -71,11 +71,10 @@ public class ProgrammeController {
      * 修改日程
      * @param programmeId
      * @param content
-     * @param model
      * @return
      */
     @RequestMapping("updateProgramme")
-    public String updateProgramme(@RequestParam String programmeId, @RequestParam String content, Model model){
+    public String updateProgramme(@RequestParam String programmeId, @RequestParam String content){
         ProgrammeDO programmeDO = new ProgrammeDO();
         if(StringUtils.isNotBlank(programmeId)){
             programmeDO = programmeManager.selectByPrimaryKey(Long.valueOf(programmeId));
