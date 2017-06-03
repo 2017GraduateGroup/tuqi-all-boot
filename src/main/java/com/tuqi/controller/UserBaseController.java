@@ -39,10 +39,10 @@ public class UserBaseController {
         UserDO userDO = new UserDO();
         if(StringUtils.isNotBlank(rUsername)){
             UserQuery userQuery = new UserQuery();
-            userQuery.createCriteria().andUserNameEqualTo(rUsername);
+            userQuery.createCriteria().andUserNickNameEqualTo(rNickname);
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
             if(userDOList.size() > 0){
-                log.info("user is exit, please change");
+                log.info("user is exist, please change");
                 return 0;
             }else {
                 if(StringUtils.isNotBlank(rUsername)){
@@ -58,8 +58,8 @@ public class UserBaseController {
                     userDO.setUserPositionId(Integer.parseInt(rPosition));
                 }
                 userDO.setUserType(0);
-                userManager.insertSelective(userDO);
-                if(userManager.insertSelective(userDO) > 0){
+                Long result = userManager.insertSelective(userDO);
+                if(result > 0){
                     log.info("insert new user success", userDO.getUserName());
                     return 1;
                 }else{
