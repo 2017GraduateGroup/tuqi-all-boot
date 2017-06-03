@@ -32,26 +32,43 @@ public class UserBaseController {
     UserManager userManager;
 
     //用户注册
+    @ResponseBody
     @RequestMapping("userRegister")
-    public String userRegister(@RequestParam String rUsename,@RequestParam String rPasswd,@RequestParam(required = false) String rNickname,
+    public Integer userRegister(@RequestParam String rUsername,@RequestParam String rPasswd,@RequestParam(required = false) String rNickname,
                                @RequestParam(required = false) String rPosition){
         UserDO userDO = new UserDO();
-        if(StringUtils.isNotBlank(rUsename)){
-            userDO.setUserName(rUsename);
+        if(StringUtils.isNotBlank(rUsername)){
+            UserQuery userQuery = new UserQuery();
+            userQuery.createCriteria().andUserNameEqualTo(rUsername);
+            List<UserDO> userDOList = userManager.selectByQuery(userQuery);
+            if(userDOList.size() > 0){
+                log.info("user is exit, please change");
+                return 0;
+            }else {
+                if(StringUtils.isNotBlank(rUsername)){
+                    userDO.setUserName(rUsername);
+                }
+                if(StringUtils.isNotBlank(rPasswd)){
+                    userDO.setPassword(MyMD5Util.code(rPasswd));
+                }
+                if(StringUtils.isNotBlank(rNickname)){
+                    userDO.setUserNickName(rNickname);
+                }
+                if(StringUtils.isNotBlank(rPosition)){
+                    userDO.setUserPositionId(Integer.parseInt(rPosition));
+                }
+                userDO.setUserType(0);
+                userManager.insertSelective(userDO);
+                if(userManager.insertSelective(userDO) > 0){
+                    log.info("insert new user success", userDO.getUserName());
+                    return 1;
+                }else{
+                    log.info("insert new user fail");
+                    return 0;
+                }
+            }
         }
-        if(StringUtils.isNotBlank(rPasswd)){
-            userDO.setPassword(MyMD5Util.code(rPasswd));
-        }
-        if(StringUtils.isNotBlank(rNickname)){
-            userDO.setUserNickName(rNickname);
-        }
-        if(StringUtils.isNotBlank(rPosition)){
-            userDO.setUserPositionId(Integer.parseInt(rPosition));
-        }
-        //设置默认的用户角色-普通角色
-        userDO.setUserType(0);
-        userManager.insertSelective(userDO);
-        return "/loginAndRegister";
+        return 0;
     }
 
     //用户登录
@@ -60,7 +77,7 @@ public class UserBaseController {
     public Integer userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, HttpServletRequest request){
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
-            userQuery.createCriteria().andUserNameEqualTo(usernameInput).andPasswordEqualTo(passwdInput);
+            userQuery.createCriteria().andUserNickNameEqualTo(usernameInput).andPasswordEqualTo(MyMD5Util.code(passwdInput));
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
             if(userDOList.size() > 0){
                 request.getSession().setAttribute("currentUserId", userDOList.get(0).getUserId());
