@@ -45,7 +45,8 @@ public class UserBaseController {
         if(StringUtils.isNotBlank(rPosition)){
             userDO.setUserPositionId(Integer.parseInt(rPosition));
         }
-
+        //设置默认的用户角色-普通角色
+        userDO.setUserType(0);
         userManager.insertSelective(userDO);
         return "/loginAndRegister";
     }

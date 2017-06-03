@@ -35,7 +35,7 @@ public class DailyRecordController {
      * @return
      */
     @RequestMapping("addDailyRecord")
-    public String addDailyRecord(@RequestParam String userId, @RequestParam String title,
+    public void addDailyRecord(@RequestParam String userId, @RequestParam String title,
                                  @RequestParam String content, @RequestParam String remarks, Model model) {
         if (StringUtils.isNotBlank(userId)) {
             DailyRecordDO recordDO = new DailyRecordDO();
@@ -55,10 +55,7 @@ public class DailyRecordController {
             dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
             List<DailyRecordDO> dailyRecordDOS = dailyRecordManager.selectByQuery(dailyRecordQuery);
             model.addAllAttributes(dailyRecordDOS);
-        } else {
-            return "/showDailyRecord";
         }
-        return "/dailyRecordList";
     }
 
     /**
@@ -71,7 +68,7 @@ public class DailyRecordController {
      * @return
      */
     @RequestMapping("updateDailyRecord")
-    public String updateDailyRecord(@RequestParam String userId, @RequestParam String dailyRecordId, String title, String content, String remarks) {
+    public void updateDailyRecord(@RequestParam String userId, @RequestParam String dailyRecordId, String title, String content, String remarks) {
         if (StringUtils.isNotBlank(dailyRecordId)) {
             DailyRecordDO dailyRecordDO = dailyRecordManager.selectByPrimaryKey(Long.valueOf(dailyRecordId));
             if (null != dailyRecordDO) {
@@ -87,8 +84,6 @@ public class DailyRecordController {
                 dailyRecordManager.updateByPrimaryKeySelective(dailyRecordDO);
             }
         }
-
-        return "/showDailyRecord";
     }
 
     /**
@@ -98,13 +93,12 @@ public class DailyRecordController {
      * @return
      */
     @RequestMapping("deleteDailyRecord")
-    public String deleteDailyRecord(@RequestParam String dailyRecordNum) {
+    public void deleteDailyRecord(@RequestParam String dailyRecordNum) {
         if (StringUtils.isNotBlank(dailyRecordNum)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordidEqualTo(Long.valueOf(dailyRecordNum));
             dailyRecordManager.deleteByQuery(dailyRecordQuery);
         }
-        return "/showDailyRecord";
     }
 
     /**

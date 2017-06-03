@@ -10,6 +10,7 @@
         <result column="user_nick_name" jdbcType="VARCHAR" property="userNickName" />
         <result column="password" jdbcType="VARCHAR" property="password" />
         <result column="user_position_id" jdbcType="INTEGER" property="userPositionId" />
+        <result column="user_type" jdbcType="INTEGER" property="userType" />
     </resultMap>
 
     <sql id="Query_Where_Clause">
@@ -73,7 +74,7 @@
     </sql>
 
     <sql id="Base_Column_List">
-        user_id,gmt_create,gmt_modified,user_name,user_nick_name,password,user_position_id
+        user_id,gmt_create,gmt_modified,user_name,user_nick_name,password,user_position_id,user_type
     </sql>
 
     <select id="selectByQuery" parameterType="com.tuqi.domain.query.UserQuery" resultMap="BaseResultMap">
@@ -126,6 +127,9 @@
             <if test="userPositionId != null">
                 user_position_id,
             </if>
+            <if test="userType != null">
+                user_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             now(),now(),
@@ -140,6 +144,9 @@
             </if>
             <if test="userPositionId != null">
                 #{userPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -167,6 +174,9 @@
             <if test="record.userPositionId != null">
                 user_position_id = #{record.userPositionId,jdbcType=INTEGER},
             </if>
+            <if test="record.userType != null">
+                user_type = #{record.userType,jdbcType=INTEGER},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Query_Where_Clause" />
@@ -179,6 +189,7 @@
         user_nick_name = #{record.userNickName,jdbcType=VARCHAR},
         password = #{record.password,jdbcType=VARCHAR},
         user_position_id = #{record.userPositionId,jdbcType=INTEGER},
+        user_type = #{record.userType,jdbcType=INTEGER},
         gmt_modified = now()
         <if test="_parameter != null">
             <include refid="Update_By_Query_Where_Clause" />
@@ -200,6 +211,9 @@
             </if>
             <if test="userPositionId != null">
                 user_position_id = #{userPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType,jdbcType=INTEGER},
             </if>
         </set>
         where user_id = #{userId,jdbcType=BIGINT}

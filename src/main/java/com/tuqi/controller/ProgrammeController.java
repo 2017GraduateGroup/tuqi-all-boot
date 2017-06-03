@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +39,7 @@ public class ProgrammeController {
      * @return
      */
     @RequestMapping("addProgramme")
-    public String addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
+    public void addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
                                @RequestParam String programmeType, Model model){
         UserDO userDO = new UserDO();
         ProgrammeDO programmeDO = new ProgrammeDO();
@@ -64,7 +65,6 @@ public class ProgrammeController {
         programmeDO.setStatus(ISEFFECTIVE);
         model.addAttribute("user", userDO);
         programmeManager.insertSelective(programmeDO);
-        return "/index";
     }
 
     /**
@@ -74,7 +74,7 @@ public class ProgrammeController {
      * @return
      */
     @RequestMapping("updateProgramme")
-    public String updateProgramme(@RequestParam String programmeId, @RequestParam String content){
+    public void updateProgramme(@RequestParam String programmeId, @RequestParam String content){
         ProgrammeDO programmeDO = new ProgrammeDO();
         if(StringUtils.isNotBlank(programmeId)){
             programmeDO = programmeManager.selectByPrimaryKey(Long.valueOf(programmeId));
@@ -83,21 +83,18 @@ public class ProgrammeController {
             programmeDO.setContent(content);
         }
         programmeManager.updateByPrimaryKeySelective(programmeDO);
-        return "/showProgrammeList";
     }
 
     /**
      * 删除日程
      * @param programmeId
-     * @param model
      * @return
      */
     @RequestMapping("deleteProgramme")
-    public String deleteProgramme(@RequestParam String programmeId, Model model){
+    public void deleteProgramme(@RequestParam String programmeId){
         if(StringUtils.isNotBlank(programmeId)){
             programmeManager.deleteByPrimaryKey(programmeManager.selectByPrimaryKey(Long.valueOf(programmeId)));
         }
-        return "/index";
     }
 
     /**
@@ -106,17 +103,25 @@ public class ProgrammeController {
      * @param model
      * @return
      */
+    @ResponseBody
     @RequestMapping("queryProgramme")
-    public String queryProgramme(@RequestParam String userId, Model model){
+    public List queryProgramme(@RequestParam String userId, String programmeType, String key, Model model){
         ProgrammeQuery programmeQuery = new ProgrammeQuery();
         if(StringUtils.isNotBlank(userId)){
             programmeQuery.createCriteria().andProgramUserIdEqualTo(Long.valueOf(userId));
+            //如果传入的参数存在日程类型，加入筛选条件
+            if(StringUtils.isNotBlank(programmeType)){
+                programmeQuery.createCriteria().andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
+            }
+            //如果传入的参数存在关键字，加入筛选条件
+            if(StringUtils.isNotBlank(key)){
+                programmeQuery.createCriteria().andContentLike(key);
+            }
         }
         List<ProgrammeDO> programmeList = programmeManager.selectByQuery(programmeQuery);
         model.addAllAttributes(programmeList);
-        return "/showProgrammeList";
+        return programmeList;
     }
-
 //    /**
 //     * 获取当前时间
 //     * @return

@@ -49,4 +49,9 @@ public class UserDO implements Serializable {
      */
     private Integer userPositionId;
 
+    /**
+     * This field corresponds to the database column user.user_type
+     */
+    private Integer userType;
+
 }
