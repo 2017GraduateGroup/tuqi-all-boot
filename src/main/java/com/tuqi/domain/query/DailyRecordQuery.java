@@ -587,6 +587,78 @@ public class DailyRecordQuery extends BaseQuery implements Serializable {
             return (Criteria) this;
         }
 
+        public Criteria andCreatTimeIsNull() {
+            addCriterion("creat_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeIsNotNull() {
+            addCriterion("creat_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeEqualTo(String value) {
+            addCriterion("creat_time =", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeNotEqualTo(String value) {
+            addCriterion("creat_time <>", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeGreaterThan(String value) {
+            addCriterion("creat_time >", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("creat_time >=", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeLessThan(String value) {
+            addCriterion("creat_time <", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeLessThanOrEqualTo(String value) {
+            addCriterion("creat_time <=", value, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeLike(String value) {
+            String strValue = "%"+value.toString()+"%";
+            addCriterion("creat_time like", strValue, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeNotLike(String value) {
+            String strValue = "%"+value.toString()+"%";
+            addCriterion("creat_time not like", strValue, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeIn(List<String> values) {
+            addCriterion("creat_time in", values, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeNotIn(List<String> values) {
+            addCriterion("creat_time not in", values, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeBetween(String value1, String value2) {
+            addCriterion("creat_time between", value1, value2, "creatTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatTimeNotBetween(String value1, String value2) {
+            addCriterion("creat_time not between", value1, value2, "creatTime");
+            return (Criteria) this;
+        }
+
     }
 
     /**

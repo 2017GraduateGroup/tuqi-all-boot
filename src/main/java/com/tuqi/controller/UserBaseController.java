@@ -1,5 +1,6 @@
 package com.tuqi.controller;
 
+import com.tuqi.domain.model.BizResult;
 import com.tuqi.domain.model.UserDO;
 import com.tuqi.domain.query.UserQuery;
 import com.tuqi.manager.UserManager;
@@ -9,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.Session;
@@ -24,26 +22,35 @@ import java.util.List;
  * Created by Xianrui Ke on 2017/4/12.
  */
 
-@Controller
+@RestController
 @RequestMapping("user")
 @Slf4j
 public class UserBaseController {
     @Autowired
     UserManager userManager;
 
-    //用户注册
-    @ResponseBody
+    /**
+     * 用户注册
+     * @param rUsername
+     * @param rPasswd
+     * @param rNickname
+     * @param rPosition
+     * @return
+     */
     @RequestMapping("userRegister")
-    public Integer userRegister(@RequestParam String rUsername,@RequestParam String rPasswd,@RequestParam(required = false) String rNickname,
+    public BizResult userRegister(@RequestParam String rUsername,@RequestParam String rPasswd,@RequestParam(required = false) String rNickname,
                                @RequestParam(required = false) String rPosition){
         UserDO userDO = new UserDO();
+        BizResult bizResult = new BizResult();
         if(StringUtils.isNotBlank(rUsername)){
             UserQuery userQuery = new UserQuery();
             userQuery.createCriteria().andUserNickNameEqualTo(rNickname);
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
             if(userDOList.size() > 0){
                 log.info("user is exist, please change");
-                return 0;
+                bizResult.setCode("0");
+                bizResult.setMessage("fail");
+                return bizResult;
             }else {
                 if(StringUtils.isNotBlank(rUsername)){
                     userDO.setUserName(rUsername);
@@ -61,36 +68,53 @@ public class UserBaseController {
                 Long result = userManager.insertSelective(userDO);
                 if(result > 0){
                     log.info("insert new user success", userDO.getUserName());
-                    return 1;
+                    bizResult.setCode("1");
+                    bizResult.setMessage("success");
+                    return bizResult;
                 }else{
                     log.info("insert new user fail");
-                    return 0;
+                    bizResult.setCode("0");
+                    bizResult.setMessage("fail");
+                    return bizResult;
                 }
             }
         }
-        return 0;
+        return bizResult;
     }
 
-    //用户登录
-    @ResponseBody
+    /**
+     * 用户登录
+     * @param usernameInput
+     * @param passwdInput
+     * @param request
+     * @return
+     */
     @RequestMapping("userLogin")
-    public Integer userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, HttpServletRequest request){
+    public BizResult userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, HttpServletRequest request){
+        BizResult bizResult = new BizResult();
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
             userQuery.createCriteria().andUserNickNameEqualTo(usernameInput).andPasswordEqualTo(MyMD5Util.code(passwdInput));
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
             if(userDOList.size() > 0){
                 request.getSession().setAttribute("currentUserId", userDOList.get(0).getUserId());
-                return 1;
+                bizResult.setCode("1");
+                bizResult.setData(userDOList.get(0).getUserId().toString());
+                bizResult.setMessage("login success");
+                return bizResult;
             }else{
-                return 0;
+                bizResult.setCode("0");
+                bizResult.setMessage("login fail");
+                return bizResult;
             }
         }
-        return 0;
+        return bizResult;
     }
 
-    //获取所有的用户信息
-    @ResponseBody
+    /**
+     * 获取所有的用户信息
+     * @return
+     */
     @RequestMapping("getAllUserInfo")
     public List getAllUserInfo(){
         UserQuery userQuery = new UserQuery();
@@ -99,9 +123,18 @@ public class UserBaseController {
         return userDOList;
     }
 
-    //修改用户信息
+    /**
+     * 修改用户信息
+     * @param userId
+     * @param userName
+     * @param nickName
+     * @param password
+     * @param userType
+     * @return
+     */
     @RequestMapping("updateUserInfo")
-    public void updateUserInfo(@RequestParam String userId,String userName, String nickName, String password, String userType){
+    public BizResult updateUserInfo(@RequestParam String userId,String userName, String nickName, String password, String userType){
+        BizResult bizResult = new BizResult();
         if(StringUtils.isNotBlank(userId)){
             UserDO userDO = userManager.selectByPrimaryKey(Long.valueOf(userId));
             if(userDO != null){
@@ -114,10 +147,17 @@ public class UserBaseController {
                 if(StringUtils.isNotBlank(password)){
                     userDO.setPassword(password);
                 }
+                bizResult.setCode("1");
+                bizResult.setMessage("success");
                 log.info("update user info success", userId);
+                return bizResult;
             }
         }else {
+            bizResult.setCode("0");
+            bizResult.setMessage("fail");
             log.info("user id is null", userId);
+            return bizResult;
         }
+        return bizResult;
     }
 }

@@ -11,6 +11,7 @@
         <result column="status" jdbcType="VARCHAR" property="status" />
         <result column="remarks" jdbcType="VARCHAR" property="remarks" />
         <result column="record_user_id" jdbcType="BIGINT" property="recordUserId" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
     </resultMap>
 
     <sql id="Query_Where_Clause">
@@ -74,7 +75,7 @@
     </sql>
 
     <sql id="Base_Column_List">
-        recordId,gmt_create,gmt_modified,title,content,status,remarks,record_user_id
+        recordId,gmt_create,gmt_modified,title,content,status,remarks,record_user_id,creat_time
     </sql>
 
     <select id="selectByQuery" parameterType="com.tuqi.domain.query.DailyRecordQuery" resultMap="BaseResultMap">
@@ -130,6 +131,9 @@
             <if test="recordUserId != null">
                 record_user_id,
             </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             now(),now(),
@@ -147,6 +151,9 @@
             </if>
             <if test="recordUserId != null">
                 #{recordUserId,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -177,6 +184,9 @@
             <if test="record.recordUserId != null">
                 record_user_id = #{record.recordUserId,jdbcType=BIGINT},
             </if>
+            <if test="record.creatTime != null">
+                creat_time = #{record.creatTime,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Query_Where_Clause" />
@@ -190,6 +200,7 @@
         status = #{record.status,jdbcType=VARCHAR},
         remarks = #{record.remarks,jdbcType=VARCHAR},
         record_user_id = #{record.recordUserId,jdbcType=BIGINT},
+        creat_time = #{record.creatTime,jdbcType=VARCHAR},
         gmt_modified = now()
         <if test="_parameter != null">
             <include refid="Update_By_Query_Where_Clause" />
@@ -214,6 +225,9 @@
             </if>
             <if test="recordUserId != null">
                 record_user_id = #{recordUserId,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
             </if>
         </set>
         where recordId = #{recordid,jdbcType=BIGINT}

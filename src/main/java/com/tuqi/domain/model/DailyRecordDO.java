@@ -54,4 +54,9 @@ public class DailyRecordDO implements Serializable {
      */
     private Long recordUserId;
 
+    /**
+     * This field corresponds to the database column daily_record.creat_time
+     */
+    private String creatTime;
+
 }

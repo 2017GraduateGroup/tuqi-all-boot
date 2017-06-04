@@ -1,5 +1,6 @@
 package com.tuqi.controller;
 
+import com.tuqi.domain.model.BizResult;
 import com.tuqi.domain.model.ProgrammeDO;
 import com.tuqi.domain.model.UserDO;
 import com.tuqi.domain.query.ProgrammeQuery;
@@ -8,12 +9,12 @@ import com.tuqi.manager.UserManager;
 import com.tuqi.util.ProgrammeType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ import static com.tuqi.util.ConstantUtil.ISEFFECTIVE;
 /**
  * Created by Xianrui Ke on 2017/4/26.
  */
-@Controller
+@RestController
 @RequestMapping("programme")
 public class ProgrammeController {
     @Autowired
@@ -35,12 +36,12 @@ public class ProgrammeController {
      * 添加日程
      * @param userId
      * @param content
-     * @param model
      * @return
      */
     @RequestMapping("addProgramme")
-    public void addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
-                               @RequestParam String programmeType, Model model){
+    public BizResult addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
+                                  @RequestParam String programmeType){
+        BizResult bizResult = new BizResult();
         UserDO userDO = new UserDO();
         ProgrammeDO programmeDO = new ProgrammeDO();
         if(StringUtils.isNotBlank(userId)){
@@ -56,15 +57,18 @@ public class ProgrammeController {
             programmeDO.setProgrammeTime(programmeTime);
         }
         if(StringUtils.isNotBlank(programmeType)){
-            for (ProgrammeType programmeTypeItem : ProgrammeType.values()) {
-                if(StringUtils.equals(programmeType, programmeTypeItem.getDesc())){
-                    programmeDO.setProgramTypeId(programmeTypeItem.getCode());
-                }
-            }
+            programmeDO.setProgrammeid(Long.valueOf(programmeType));
         }
         programmeDO.setStatus(ISEFFECTIVE);
-        model.addAttribute("user", userDO);
-        programmeManager.insertSelective(programmeDO);
+        Long result = programmeManager.insertSelective(programmeDO);
+        if(result > 0){
+            bizResult.setCode("1");
+            bizResult.setMessage("success");
+            return bizResult;
+        }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
     }
 
     /**
@@ -74,7 +78,8 @@ public class ProgrammeController {
      * @return
      */
     @RequestMapping("updateProgramme")
-    public void updateProgramme(@RequestParam String programmeId, @RequestParam String content){
+    public BizResult updateProgramme(@RequestParam String programmeId, @RequestParam String content){
+        BizResult bizResult = new BizResult();
         ProgrammeDO programmeDO = new ProgrammeDO();
         if(StringUtils.isNotBlank(programmeId)){
             programmeDO = programmeManager.selectByPrimaryKey(Long.valueOf(programmeId));
@@ -82,7 +87,15 @@ public class ProgrammeController {
         if(null != programmeDO && StringUtils.isNotBlank(content)){
             programmeDO.setContent(content);
         }
-        programmeManager.updateByPrimaryKeySelective(programmeDO);
+        Integer result = programmeManager.updateByPrimaryKeySelective(programmeDO);
+        if(result > 0){
+            bizResult.setCode("1");
+            bizResult.setMessage("success");
+            return bizResult;
+        }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
     }
 
     /**
@@ -100,12 +113,10 @@ public class ProgrammeController {
     /**
      * 查询当前用户的所有日程安排
      * @param userId
-     * @param model
      * @return
      */
-    @ResponseBody
     @RequestMapping("queryProgramme")
-    public List queryProgramme(@RequestParam String userId, String programmeType, String key, Model model){
+    public List queryProgramme(@RequestParam String userId, String programmeType, String key){
         ProgrammeQuery programmeQuery = new ProgrammeQuery();
         if(StringUtils.isNotBlank(userId)){
             programmeQuery.createCriteria().andProgramUserIdEqualTo(Long.valueOf(userId));
@@ -119,15 +130,6 @@ public class ProgrammeController {
             }
         }
         List<ProgrammeDO> programmeList = programmeManager.selectByQuery(programmeQuery);
-        model.addAllAttributes(programmeList);
         return programmeList;
     }
-//    /**
-//     * 获取当前时间
-//     * @return
-//     */
-//    private String getNowTime(){
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        return simpleDateFormat.format(new Date());
-//    }
 }

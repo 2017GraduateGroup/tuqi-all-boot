@@ -1,16 +1,18 @@
 package com.tuqi.controller;
 
+import com.tuqi.domain.model.BizResult;
 import com.tuqi.domain.model.DailyRecordDO;
 import com.tuqi.domain.query.DailyRecordQuery;
 import com.tuqi.manager.DailyRecordManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.tuqi.util.ConstantUtil.ISEFFECTIVE;
@@ -18,7 +20,7 @@ import static com.tuqi.util.ConstantUtil.ISEFFECTIVE;
 /**
  * Created by Xianrui Ke on 2017/5/13.
  */
-@Controller
+@RestController
 @RequestMapping("dairecord")
 public class DailyRecordController {
     @Autowired
@@ -31,12 +33,12 @@ public class DailyRecordController {
      * @param title
      * @param content
      * @param remarks
-     * @param model
      * @return
      */
     @RequestMapping("addDailyRecord")
-    public void addDailyRecord(@RequestParam String userId, @RequestParam String title,
-                                 @RequestParam String content, @RequestParam String remarks, Model model) {
+    public BizResult addDailyRecord(@RequestParam String userId, @RequestParam String title,
+                                    @RequestParam String content, @RequestParam String remarks) {
+        BizResult bizResult = new BizResult();
         if (StringUtils.isNotBlank(userId)) {
             DailyRecordDO recordDO = new DailyRecordDO();
             if (StringUtils.isNotBlank(title)) {
@@ -50,25 +52,29 @@ public class DailyRecordController {
             }
             recordDO.setRecordUserId(Long.valueOf(userId));
             recordDO.setStatus(ISEFFECTIVE);
-            dailyRecordManager.insertSelective(recordDO);
-            DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-            dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
-            List<DailyRecordDO> dailyRecordDOS = dailyRecordManager.selectByQuery(dailyRecordQuery);
-            model.addAllAttributes(dailyRecordDOS);
+            Long result = dailyRecordManager.insertSelective(recordDO);
+            if(result > 0){
+                bizResult.setCode("1");
+                bizResult.setMessage("success");
+                return bizResult;
+            }
         }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
     }
 
     /**
      * 更新日志
      *
-     * @param userId
      * @param title
      * @param content
      * @param remarks
      * @return
      */
     @RequestMapping("updateDailyRecord")
-    public void updateDailyRecord(@RequestParam String userId, @RequestParam String dailyRecordId, String title, String content, String remarks) {
+    public BizResult updateDailyRecord(@RequestParam String dailyRecordId, String title, String content, String remarks) {
+        BizResult bizResult = new BizResult();
         if (StringUtils.isNotBlank(dailyRecordId)) {
             DailyRecordDO dailyRecordDO = dailyRecordManager.selectByPrimaryKey(Long.valueOf(dailyRecordId));
             if (null != dailyRecordDO) {
@@ -81,9 +87,17 @@ public class DailyRecordController {
                 if (StringUtils.isNotBlank(remarks)) {
                     dailyRecordDO.setRemarks(remarks);
                 }
-                dailyRecordManager.updateByPrimaryKeySelective(dailyRecordDO);
+                Integer result = dailyRecordManager.updateByPrimaryKeySelective(dailyRecordDO);
+                if(result > 0){
+                    bizResult.setCode("1");
+                    bizResult.setMessage("success");
+                    return bizResult;
+                }
             }
         }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
     }
 
     /**
@@ -93,12 +107,21 @@ public class DailyRecordController {
      * @return
      */
     @RequestMapping("deleteDailyRecord")
-    public void deleteDailyRecord(@RequestParam String dailyRecordNum) {
+    public BizResult deleteDailyRecord(@RequestParam String dailyRecordNum) {
+        BizResult bizResult = new BizResult();
         if (StringUtils.isNotBlank(dailyRecordNum)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordidEqualTo(Long.valueOf(dailyRecordNum));
-            dailyRecordManager.deleteByQuery(dailyRecordQuery);
+            Integer result = dailyRecordManager.deleteByQuery(dailyRecordQuery);
+            if(result > 0){
+                bizResult.setCode("1");
+                bizResult.setMessage("success");
+                return bizResult;
+            }
         }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
     }
 
     /**
@@ -107,16 +130,34 @@ public class DailyRecordController {
      * @param userId
      * @return
      */
-    @ResponseBody
     @RequestMapping("queryDailyRecord")
     public List queryDailyRecord(@RequestParam String userId) {
         if (StringUtils.isNotBlank(userId)) {
             DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
             dailyRecordQuery.createCriteria().andRecordUserIdEqualTo(Long.valueOf(userId));
             List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
-            return dailyRecordDOList;
+            List<DailyRecordDO> dailyRecordDOS = new ArrayList<>();
+            for(DailyRecordDO dailyRecordDO : dailyRecordDOList){
+                dailyRecordDO.setCreatTime(getFormatTime(dailyRecordDO.getGmtCreate()));
+                dailyRecordDOS.add(dailyRecordDO);
+            }
+            return dailyRecordDOS;
         } else {
             return null;
         }
+    }
+
+    /**
+     * 格式化时间
+     * @return
+     */
+    private static String getFormatTime(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String time = simpleDateFormat.format(date);
+        return time;
+    }
+
+    public static void main(String args[]){
+        System.out.print(getFormatTime(new Date()));
     }
 }
