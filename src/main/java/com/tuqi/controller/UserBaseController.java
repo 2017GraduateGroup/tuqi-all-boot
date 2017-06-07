@@ -160,4 +160,16 @@ public class UserBaseController {
         }
         return bizResult;
     }
+
+    @RequestMapping("queryAllUser")
+    public BizResult queryAllUser(){
+        BizResult bizResult = new BizResult();
+        UserQuery userQuery = new UserQuery();
+        userQuery.createCriteria().andUserIdIsNotNull();
+        List<UserDO> userDOList = userManager.selectByQuery(userQuery);
+        bizResult.setCode("1");
+        bizResult.setMessage("success");
+        bizResult.setDataList(userDOList);
+        return bizResult;
+    }
 }

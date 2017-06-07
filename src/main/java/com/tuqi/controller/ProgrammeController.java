@@ -34,34 +34,35 @@ public class ProgrammeController {
 
     /**
      * 添加日程
+     *
      * @param userId
      * @param content
      * @return
      */
     @RequestMapping("addProgramme")
     public BizResult addProgramme(@RequestParam String userId, @RequestParam String content, @RequestParam String programmeTime,
-                                  @RequestParam String programmeType){
+                                  @RequestParam String programmeType) {
         BizResult bizResult = new BizResult();
         UserDO userDO = new UserDO();
         ProgrammeDO programmeDO = new ProgrammeDO();
-        if(StringUtils.isNotBlank(userId)){
+        if (StringUtils.isNotBlank(userId)) {
             userDO = userManager.selectByPrimaryKey(Long.valueOf(userId));
         }
-        if(null != userDO){
+        if (null != userDO) {
             programmeDO.setProgramUserId(userDO.getUserId());
         }
-        if(StringUtils.isNotBlank(content)){
+        if (StringUtils.isNotBlank(content)) {
             programmeDO.setContent(content);
         }
-        if(StringUtils.isNotBlank(programmeTime)){
+        if (StringUtils.isNotBlank(programmeTime)) {
             programmeDO.setProgrammeTime(programmeTime);
         }
-        if(StringUtils.isNotBlank(programmeType)){
+        if (StringUtils.isNotBlank(programmeType)) {
             programmeDO.setProgrammeid(Long.valueOf(programmeType));
         }
         programmeDO.setStatus(ISEFFECTIVE);
         Long result = programmeManager.insertSelective(programmeDO);
-        if(result > 0){
+        if (result > 0) {
             bizResult.setCode("1");
             bizResult.setMessage("success");
             return bizResult;
@@ -73,22 +74,23 @@ public class ProgrammeController {
 
     /**
      * 修改日程
+     *
      * @param programmeId
      * @param content
      * @return
      */
     @RequestMapping("updateProgramme")
-    public BizResult updateProgramme(@RequestParam String programmeId, @RequestParam String content){
+    public BizResult updateProgramme(@RequestParam String programmeId, @RequestParam String content) {
         BizResult bizResult = new BizResult();
         ProgrammeDO programmeDO = new ProgrammeDO();
-        if(StringUtils.isNotBlank(programmeId)){
+        if (StringUtils.isNotBlank(programmeId)) {
             programmeDO = programmeManager.selectByPrimaryKey(Long.valueOf(programmeId));
         }
-        if(null != programmeDO && StringUtils.isNotBlank(content)){
+        if (null != programmeDO && StringUtils.isNotBlank(content)) {
             programmeDO.setContent(content);
         }
         Integer result = programmeManager.updateByPrimaryKeySelective(programmeDO);
-        if(result > 0){
+        if (result > 0) {
             bizResult.setCode("1");
             bizResult.setMessage("success");
             return bizResult;
@@ -100,36 +102,81 @@ public class ProgrammeController {
 
     /**
      * 删除日程
+     *
      * @param programmeId
      * @return
      */
     @RequestMapping("deleteProgramme")
-    public void deleteProgramme(@RequestParam String programmeId){
-        if(StringUtils.isNotBlank(programmeId)){
+    public void deleteProgramme(@RequestParam String programmeId) {
+        if (StringUtils.isNotBlank(programmeId)) {
             programmeManager.deleteByPrimaryKey(programmeManager.selectByPrimaryKey(Long.valueOf(programmeId)));
         }
     }
 
     /**
      * 查询当前用户的所有日程安排
+     *
      * @param userId
      * @return
      */
     @RequestMapping("queryProgramme")
-    public List queryProgramme(@RequestParam String userId, String programmeType, String key){
+    public List queryProgramme(@RequestParam String userId, String programmeType, String key) {
         ProgrammeQuery programmeQuery = new ProgrammeQuery();
-        if(StringUtils.isNotBlank(userId)){
-            programmeQuery.createCriteria().andProgramUserIdEqualTo(Long.valueOf(userId));
+        if (StringUtils.isNotBlank(userId)) {
+            programmeQuery.createCriteria().andProgramUserIdEqualTo(Long.valueOf(userId)).
+                    andStatusEqualTo("1");
             //如果传入的参数存在日程类型，加入筛选条件
-            if(StringUtils.isNotBlank(programmeType)){
+            if (StringUtils.isNotBlank(programmeType)) {
                 programmeQuery.createCriteria().andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
             }
             //如果传入的参数存在关键字，加入筛选条件
-            if(StringUtils.isNotBlank(key)){
+            if (StringUtils.isNotBlank(key)) {
                 programmeQuery.createCriteria().andContentLike(key);
             }
         }
         List<ProgrammeDO> programmeList = programmeManager.selectByQuery(programmeQuery);
         return programmeList;
+    }
+
+    /**
+     * 多条件查找日程信息
+     * @param key
+     * @param programmeTime
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping("queryProgrammeByCondition")
+    public BizResult queryProgrammeByCondition(String key, String programmeTime, String startTime,
+                                    String endTime, String programmeType){
+        BizResult bizResult = new BizResult();
+        ProgrammeQuery programmeQuery = new ProgrammeQuery();
+        if(StringUtils.isNotBlank(key)){
+            programmeQuery.createCriteria().andContentLike(key);
+        }
+        if(StringUtils.isNotBlank(programmeTime)){
+            programmeQuery.createCriteria().andProgrammeTimeEqualTo(programmeTime);
+        }
+        if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
+            programmeQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime));
+        }
+        if(StringUtils.isNotBlank(programmeType)){
+            programmeQuery.createCriteria().andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
+        }
+        List<ProgrammeDO> programmeDOList = programmeManager.selectByQuery(programmeQuery);
+        bizResult.setCode("1");
+        bizResult.setMessage("success");
+        bizResult.setDataList(programmeDOList);
+        return bizResult;
+    }
+
+    public Date getDate(String strDate){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        try {
+            return simpleDateFormat.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

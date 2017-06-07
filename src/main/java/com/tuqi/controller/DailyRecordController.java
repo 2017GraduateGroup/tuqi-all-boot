@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,6 +148,39 @@ public class DailyRecordController {
         }
     }
 
+    @RequestMapping("queryDailyRecordByCondition")
+    public BizResult queryDailyRecordByCondition(String title, String contenKey, String remarks,
+                                                 String createTime,String startTime, String endTime){
+        BizResult bizResult = new BizResult();
+        DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
+        if(StringUtils.isNotBlank(title)){
+            dailyRecordQuery.createCriteria().andTitleLike(title);
+        }
+        if(StringUtils.isNotBlank(contenKey)){
+            dailyRecordQuery.createCriteria().andContentLike(contenKey);
+        }
+        if(StringUtils.isNotBlank(createTime)){
+            dailyRecordQuery.createCriteria().andCreatTimeEqualTo(createTime);
+        }
+        if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
+            dailyRecordQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime));
+        }
+        List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
+        bizResult.setCode("1");
+        bizResult.setMessage("success");
+        bizResult.setDataList(dailyRecordDOList);
+        return bizResult;
+    }
+
+    public Date getDate(String strDate){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        try {
+            return simpleDateFormat.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 格式化时间
      * @return
@@ -155,9 +189,5 @@ public class DailyRecordController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String time = simpleDateFormat.format(date);
         return time;
-    }
-
-    public static void main(String args[]){
-        System.out.print(getFormatTime(new Date()));
     }
 }
