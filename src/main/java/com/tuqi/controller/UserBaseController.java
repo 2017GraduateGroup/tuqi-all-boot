@@ -94,20 +94,25 @@ public class UserBaseController {
         BizResult bizResult = new BizResult();
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
-            userQuery.createCriteria().andUserNickNameEqualTo(usernameInput).andPasswordEqualTo(MyMD5Util.code(passwdInput));
+            userQuery.createCriteria().andUserNickNameEqualTo(usernameInput);
             List<UserDO> userDOList = userManager.selectByQuery(userQuery);
-            if(userDOList.size() > 0){
+            //验证用户是否存在
+            if(userDOList.size() == 0){
+                bizResult.setCode("2");
+                bizResult.setMessage("the user is not exit");
+            }
+            userQuery.createCriteria().andPasswordEqualTo(MyMD5Util.code(passwdInput));
+            List<UserDO> userDOS = userManager.selectByQuery(userQuery);
+            if(userDOS.size() > 0){
                 request.getSession().setAttribute("currentUserId", userDOList.get(0).getUserId());
                 bizResult.setCode("1");
                 bizResult.setData(userDOList.get(0).getUserId().toString());
                 bizResult.setMessage("login success");
                 return bizResult;
-            }else{
-                bizResult.setCode("0");
-                bizResult.setMessage("login fail");
-                return bizResult;
             }
         }
+        bizResult.setCode("0");
+        bizResult.setMessage("login fail");
         return bizResult;
     }
 

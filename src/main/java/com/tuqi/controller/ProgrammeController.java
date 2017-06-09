@@ -170,6 +170,36 @@ public class ProgrammeController {
         return bizResult;
     }
 
+    /**
+     * 获取需要提醒日程列表
+     * @return
+     */
+    @RequestMapping("getNoticeProgramme")
+    public BizResult getNoticeProgramme(){
+        BizResult bizResult = new BizResult();
+        Date nowTime = new Date();
+        Long longTime = 5*60*1000L;
+        Date closeTime = new Date(nowTime.getTime() + longTime);
+        ProgrammeQuery programmeQuery = new ProgrammeQuery();
+        programmeQuery.createCriteria().andGmtCreateEqualTo(closeTime);
+        List<ProgrammeDO> programmeDOList = programmeManager.selectByQuery(programmeQuery);
+        if(programmeDOList.size() > 0){
+            bizResult.setCode("1");
+            bizResult.setMessage("have data");
+            bizResult.setDataList(programmeDOList);
+            return bizResult;
+        }else if(programmeDOList.size() == 0){
+            bizResult.setCode("2");
+            bizResult.setMessage("no data");
+            bizResult.setDataList(programmeDOList);
+            return bizResult;
+        }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        return bizResult;
+    }
+
+    //将字符串转换成Date类型
     public Date getDate(String strDate){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         try {
