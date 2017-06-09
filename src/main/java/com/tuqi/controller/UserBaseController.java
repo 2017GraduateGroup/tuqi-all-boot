@@ -86,11 +86,10 @@ public class UserBaseController {
      * 用户登录
      * @param usernameInput
      * @param passwdInput
-     * @param request
      * @return
      */
     @RequestMapping("userLogin")
-    public BizResult userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput, HttpServletRequest request){
+    public BizResult userLogin(@RequestParam String usernameInput, @RequestParam String passwdInput){
         BizResult bizResult = new BizResult();
         if(StringUtils.isNotBlank(usernameInput)){
             UserQuery userQuery = new UserQuery();
@@ -100,13 +99,18 @@ public class UserBaseController {
             if(userDOList.size() == 0){
                 bizResult.setCode("2");
                 bizResult.setMessage("the user is not exit");
+                return bizResult;
             }
-            userQuery.createCriteria().andPasswordEqualTo(MyMD5Util.code(passwdInput));
+            String dbpass = userDOList.get(0).getPassword();
+        }
+        String codepass = MyMD5Util.code(passwdInput);
+        if(StringUtils.isNotBlank(passwdInput)){
+            UserQuery userQuery = new UserQuery();
+            userQuery.createCriteria().andUserNickNameEqualTo(usernameInput).andPasswordEqualTo(MyMD5Util.code(passwdInput));
             List<UserDO> userDOS = userManager.selectByQuery(userQuery);
             if(userDOS.size() > 0){
-                request.getSession().setAttribute("currentUserId", userDOList.get(0).getUserId());
                 bizResult.setCode("1");
-                bizResult.setData(userDOList.get(0).getUserId().toString());
+                bizResult.setData(userDOS.get(0).getUserId().toString());
                 bizResult.setMessage("login success");
                 return bizResult;
             }
