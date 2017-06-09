@@ -147,17 +147,21 @@ public class UserBaseController {
                 if(StringUtils.isNotBlank(password)){
                     userDO.setPassword(password);
                 }
-                bizResult.setCode("1");
-                bizResult.setMessage("success");
-                log.info("update user info success", userId);
-                return bizResult;
+                if(StringUtils.isNotBlank(userType)){
+                    userDO.setUserType(Integer.valueOf(userType));
+                }
+                Integer result = userManager.updateByPrimaryKeySelective(userDO);
+                if(result > 0){
+                    bizResult.setCode("1");
+                    bizResult.setMessage("success");
+                    log.info("update user info success", userId);
+                    return bizResult;
+                }
             }
-        }else {
-            bizResult.setCode("0");
-            bizResult.setMessage("fail");
-            log.info("user id is null", userId);
-            return bizResult;
         }
+        bizResult.setCode("0");
+        bizResult.setMessage("fail");
+        log.info("user id is null", userId);
         return bizResult;
     }
 

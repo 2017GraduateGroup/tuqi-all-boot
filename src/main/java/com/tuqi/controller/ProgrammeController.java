@@ -58,7 +58,7 @@ public class ProgrammeController {
             programmeDO.setProgrammeTime(programmeTime);
         }
         if (StringUtils.isNotBlank(programmeType)) {
-            programmeDO.setProgrammeid(Long.valueOf(programmeType));
+            programmeDO.setProgramTypeId(Integer.valueOf(programmeType));
         }
         programmeDO.setStatus(ISEFFECTIVE);
         Long result = programmeManager.insertSelective(programmeDO);

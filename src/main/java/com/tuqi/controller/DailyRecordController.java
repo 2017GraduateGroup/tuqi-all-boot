@@ -165,6 +165,9 @@ public class DailyRecordController {
         if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
             dailyRecordQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime));
         }
+        if(StringUtils.isNotBlank(remarks)){
+            dailyRecordQuery.createCriteria().andRemarksLike(remarks);
+        }
         List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
         bizResult.setCode("1");
         bizResult.setMessage("success");
