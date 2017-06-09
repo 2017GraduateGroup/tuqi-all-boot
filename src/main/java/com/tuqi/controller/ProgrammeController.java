@@ -151,22 +151,67 @@ public class ProgrammeController {
                                     String endTime, String programmeType){
         BizResult bizResult = new BizResult();
         ProgrammeQuery programmeQuery = new ProgrammeQuery();
-        if(StringUtils.isNotBlank(key)){
-            programmeQuery.createCriteria().andContentLike(key);
+        //全部搜索条件
+        if(StringUtils.isNotBlank(key) && StringUtils.isNotBlank(programmeTime) && StringUtils.isNotBlank(startTime)
+                && StringUtils.isNotBlank(endTime) && StringUtils.isNotBlank(programmeType)){
+            programmeQuery.createCriteria().andContentLike(key).andProgrammeTimeEqualTo(programmeTime)
+                    .andGmtCreateBetween(getDate(startTime), getDate(endTime)).andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
         }
-        if(StringUtils.isNotBlank(programmeTime)){
+        if(StringUtils.isNotBlank(key) && StringUtils.isNotBlank(programmeTime) && StringUtils.isNotBlank(startTime)
+                && StringUtils.isNotBlank(endTime) && StringUtils.isNotBlank(programmeType)){
+            programmeQuery.createCriteria().andContentLike(key).andProgrammeTimeEqualTo(programmeTime)
+                    .andGmtCreateBetween(getDate(startTime), getDate(endTime));
+        }
+        //关键字+事件发生时间
+        if(StringUtils.isNotBlank(key) && StringUtils.isNotBlank(programmeTime) && (StringUtils.isBlank(startTime) ||
+                StringUtils.isBlank(endTime)) && StringUtils.isBlank(programmeType)){
+            programmeQuery.createCriteria().andContentLike(key).andProgrammeTimeEqualTo(programmeTime);
+        }
+        //关键字+时间段搜索
+        if(StringUtils.isNotBlank(key) && StringUtils.isBlank(programmeTime) && (StringUtils.isNotBlank(startTime) &&
+                StringUtils.isNotBlank(endTime)) && StringUtils.isBlank(programmeType)){
+            programmeQuery.createCriteria().andContentLike(key).andGmtCreateBetween(getDate(startTime), getDate(endTime));
+        }
+        //时间段+日程类型
+        if(StringUtils.isBlank(key) && StringUtils.isBlank(programmeTime) && (StringUtils.isNotBlank(startTime) &&
+                StringUtils.isNotBlank(endTime)) && StringUtils.isBlank(programmeType)){
+            programmeQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime))
+                    .andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
+        }
+        //事件发生时间+类型
+        if(StringUtils.isBlank(key) && StringUtils.isNotBlank(programmeTime) && (StringUtils.isBlank(startTime) ||
+                StringUtils.isBlank(endTime)) && StringUtils.isNotBlank(programmeType)){
+            programmeQuery.createCriteria().andProgrammeTimeEqualTo(programmeTime).andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
+        }
+        //关键字+类型
+        if(StringUtils.isNotBlank(key) && StringUtils.isBlank(programmeTime) && (StringUtils.isBlank(startTime) ||
+                StringUtils.isBlank(endTime)) && StringUtils.isNotBlank(programmeType)){
+            programmeQuery.createCriteria().andContentLike(key).andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
+        }
+        //日程时间搜索
+        if(StringUtils.isBlank(key) && StringUtils.isNotBlank(programmeTime) && (StringUtils.isBlank(startTime) ||
+                StringUtils.isBlank(endTime)) && StringUtils.isBlank(programmeType)){
             programmeQuery.createCriteria().andProgrammeTimeEqualTo(programmeTime);
         }
-        if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
+        //时间段搜索
+        if(StringUtils.isBlank(key) && StringUtils.isBlank(programmeTime) && (StringUtils.isNotBlank(startTime) &&
+                StringUtils.isNotBlank(endTime)) && StringUtils.isBlank(programmeType)){
             programmeQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime));
         }
-        if(StringUtils.isNotBlank(programmeType)){
+        //事件类型搜索
+        if(StringUtils.isBlank(key) && StringUtils.isBlank(programmeTime) && (StringUtils.isBlank(startTime) ||
+                StringUtils.isBlank(endTime)) && StringUtils.isNotBlank(programmeType)){
             programmeQuery.createCriteria().andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
         }
         List<ProgrammeDO> programmeDOList = programmeManager.selectByQuery(programmeQuery);
-        bizResult.setCode("1");
-        bizResult.setMessage("success");
-        bizResult.setDataList(programmeDOList);
+        if(programmeDOList.size() > 0){
+            bizResult.setCode("1");
+            bizResult.setMessage("success");
+            bizResult.setDataList(programmeDOList);
+            return bizResult;
+        }
+        bizResult.setCode("0");
+        bizResult.setMessage("no data");
         return bizResult;
     }
 

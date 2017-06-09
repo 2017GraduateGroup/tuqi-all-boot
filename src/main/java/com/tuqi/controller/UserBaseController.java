@@ -108,6 +108,7 @@ public class UserBaseController {
             List<UserDO> userDOS = userManager.selectByQuery(userQuery);
             if(userDOS.size() > 0){
                 bizResult.setCode("1");
+                bizResult.setDataList(userDOS);
                 bizResult.setData(userDOS.get(0).getUserId().toString());
                 bizResult.setMessage("login success");
                 return bizResult;
@@ -152,7 +153,7 @@ public class UserBaseController {
                     userDO.setUserNickName(nickName);
                 }
                 if(StringUtils.isNotBlank(password)){
-                    userDO.setPassword(password);
+                    userDO.setPassword(MyMD5Util.code(password));
                 }
                 if(StringUtils.isNotBlank(userType)){
                     userDO.setUserType(Integer.valueOf(userType));
