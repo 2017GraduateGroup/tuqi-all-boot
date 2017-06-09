@@ -66,8 +66,8 @@
       <file leaf-file-name="UserBaseController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/UserBaseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state relative-caret-position="57">
+              <caret line="104" column="0" lean-forward="false" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1264,7 +1264,7 @@
       <workItem from="1496807912560" duration="3408000" />
       <workItem from="1496906634768" duration="2636000" />
       <workItem from="1496975022903" duration="2640000" />
-      <workItem from="1496996961565" duration="5843000" />
+      <workItem from="1496996961565" duration="6018000" />
     </task>
     <servers />
   </component>
@@ -1301,7 +1301,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135356000" />
+    <option name="totallyTimeSpent" value="135531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1746,8 +1746,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/UserBaseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="57">
+          <caret line="104" column="0" lean-forward="false" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding />
         </state>
       </provider>

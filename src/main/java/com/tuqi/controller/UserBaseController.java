@@ -101,9 +101,7 @@ public class UserBaseController {
                 bizResult.setMessage("the user is not exit");
                 return bizResult;
             }
-            String dbpass = userDOList.get(0).getPassword();
         }
-        String codepass = MyMD5Util.code(passwdInput);
         if(StringUtils.isNotBlank(passwdInput)){
             UserQuery userQuery = new UserQuery();
             userQuery.createCriteria().andUserNickNameEqualTo(usernameInput).andPasswordEqualTo(MyMD5Util.code(passwdInput));
