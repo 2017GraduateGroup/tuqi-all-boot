@@ -51,6 +51,7 @@ public class DailyRecordController {
             if (StringUtils.isNotBlank(remarks)) {
                 recordDO.setRemarks(remarks);
             }
+            recordDO.setCreatTime(getFormatTime(new Date()));
             recordDO.setRecordUserId(Long.valueOf(userId));
             recordDO.setStatus(ISEFFECTIVE);
             Long result = dailyRecordManager.insertSelective(recordDO);

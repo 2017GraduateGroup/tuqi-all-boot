@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fe6dbc5-a2ad-4953-b822-bf33990e9a7b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DOC/~$论文 mine.doc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DOC/~WRL1944.tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DOC/毕业论文 mine.doc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/DOC/~$论文 mine.doc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/DOC/~WRL1944.tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/DOC/毕业论文 mine.doc" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/tuqi/controller/ProgrammeController.class" afterPath="$PROJECT_DIR$/target/classes/com/tuqi/controller/ProgrammeController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tuqi/controller/DailyRecordController.java" afterPath="$PROJECT_DIR$/src/main/java/com/tuqi/controller/DailyRecordController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tuqi/controller/ProgrammeController.java" afterPath="$PROJECT_DIR$/src/main/java/com/tuqi/controller/ProgrammeController.java" />
     </list>
     <ignored path="tuqi-all.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,8 +36,8 @@
       <file leaf-file-name="DailyRecordController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/DailyRecordController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="202" column="9" lean-forward="true" selection-start-line="202" selection-start-column="9" selection-end-line="202" selection-end-column="9" />
+            <state relative-caret-position="-152">
+              <caret line="165" column="32" lean-forward="true" selection-start-line="165" selection-start-column="32" selection-end-line="165" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -55,8 +46,8 @@
       <file leaf-file-name="ProgrammeController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/ProgrammeController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="159" column="15" lean-forward="true" selection-start-line="159" selection-start-column="15" selection-end-line="159" selection-end-column="15" />
+            <state relative-caret-position="476">
+              <caret line="243" column="37" lean-forward="true" selection-start-line="243" selection-start-column="37" selection-end-line="243" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -1216,7 +1207,7 @@
       <workItem from="1496996961565" duration="11167000" />
       <workItem from="1497010934783" duration="801000" />
       <workItem from="1497336795542" duration="2874000" />
-      <workItem from="1497572966227" duration="2345000" />
+      <workItem from="1497572966227" duration="2984000" />
     </task>
     <servers />
   </component>
@@ -1253,7 +1244,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="146700000" />
+    <option name="totallyTimeSpent" value="147339000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1657,16 +1648,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/ProgrammeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="159" column="15" lean-forward="true" selection-start-line="159" selection-start-column="15" selection-end-line="159" selection-end-column="15" />
+        <state relative-caret-position="476">
+          <caret line="243" column="37" lean-forward="true" selection-start-line="243" selection-start-column="37" selection-end-line="243" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tuqi/controller/DailyRecordController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="202" column="9" lean-forward="true" selection-start-line="202" selection-start-column="9" selection-end-line="202" selection-end-column="9" />
+        <state relative-caret-position="-152">
+          <caret line="165" column="32" lean-forward="true" selection-start-line="165" selection-start-column="32" selection-end-line="165" selection-end-column="32" />
           <folding />
         </state>
       </provider>
