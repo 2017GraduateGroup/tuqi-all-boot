@@ -157,8 +157,9 @@ public class ProgrammeController {
             programmeQuery.createCriteria().andContentLike(key).andProgrammeTimeEqualTo(programmeTime)
                     .andGmtCreateBetween(getDate(startTime), getDate(endTime)).andProgramTypeIdEqualTo(Integer.valueOf(programmeType));
         }
+        //无事件类型
         if(StringUtils.isNotBlank(key) && StringUtils.isNotBlank(programmeTime) && StringUtils.isNotBlank(startTime)
-                && StringUtils.isNotBlank(endTime) && StringUtils.isNotBlank(programmeType)){
+                && StringUtils.isNotBlank(endTime) && StringUtils.isBlank(programmeType)){
             programmeQuery.createCriteria().andContentLike(key).andProgrammeTimeEqualTo(programmeTime)
                     .andGmtCreateBetween(getDate(startTime), getDate(endTime));
         }

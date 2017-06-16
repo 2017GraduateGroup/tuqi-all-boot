@@ -149,24 +149,57 @@ public class DailyRecordController {
     }
 
     @RequestMapping("queryDailyRecordByCondition")
-    public BizResult queryDailyRecordByCondition(String title, String contenKey, String remarks,
-                                                 String createTime,String startTime, String endTime){
+    public BizResult queryDailyRecordByCondition(String title, String contentKey, String remarks,
+                                                 String createTime){
         BizResult bizResult = new BizResult();
         DailyRecordQuery dailyRecordQuery = new DailyRecordQuery();
-        if(StringUtils.isNotBlank(title)){
+        //全条件
+        if(StringUtils.isNotBlank(title) && StringUtils.isNotBlank(contentKey) && StringUtils.isNotBlank(remarks) &&
+                StringUtils.isNotBlank(createTime)){
+            dailyRecordQuery.createCriteria().andTitleLike(title).andContentLike(contentKey).
+                    andRemarksLike(remarks).andCreatTimeEqualTo(createTime);
+        }
+        //title+content+remarks
+        if(StringUtils.isNotBlank(title) && StringUtils.isNotBlank(contentKey) && StringUtils.isNotBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
+            dailyRecordQuery.createCriteria().andTitleLike(title).andContentLike(contentKey).
+                    andRemarksLike(remarks);
+        }
+        //title+content
+        if(StringUtils.isNotBlank(title) && StringUtils.isNotBlank(contentKey) && StringUtils.isBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
+            dailyRecordQuery.createCriteria().andTitleLike(title).andContentLike(contentKey);
+        }
+        //title+remarks
+        if(StringUtils.isNotBlank(title) && StringUtils.isBlank(contentKey) && StringUtils.isNotBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
+            dailyRecordQuery.createCriteria().andTitleLike(title).andContentLike(contentKey).
+                    andRemarksLike(remarks);
+        }
+        //title+time
+        if(StringUtils.isNotBlank(title) && StringUtils.isBlank(contentKey) && StringUtils.isBlank(remarks) &&
+                StringUtils.isNotBlank(createTime)){
+            dailyRecordQuery.createCriteria().andTitleLike(title).andCreatTimeEqualTo(createTime);
+        }
+        //title
+        if(StringUtils.isNotBlank(title) && StringUtils.isBlank(contentKey) && StringUtils.isBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
             dailyRecordQuery.createCriteria().andTitleLike(title);
         }
-        if(StringUtils.isNotBlank(contenKey)){
-            dailyRecordQuery.createCriteria().andContentLike(contenKey);
+        //content
+        if(StringUtils.isBlank(title) && StringUtils.isNotBlank(contentKey) && StringUtils.isBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
+            dailyRecordQuery.createCriteria().andContentLike(contentKey);
         }
-        if(StringUtils.isNotBlank(createTime)){
-            dailyRecordQuery.createCriteria().andCreatTimeEqualTo(createTime);
-        }
-        if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
-            dailyRecordQuery.createCriteria().andGmtCreateBetween(getDate(startTime), getDate(endTime));
-        }
-        if(StringUtils.isNotBlank(remarks)){
+        //remarks
+        if(StringUtils.isBlank(title) && StringUtils.isBlank(contentKey) && StringUtils.isNotBlank(remarks) &&
+                StringUtils.isBlank(createTime)){
             dailyRecordQuery.createCriteria().andRemarksLike(remarks);
+        }
+        //time
+        if(StringUtils.isBlank(title) && StringUtils.isBlank(contentKey) && StringUtils.isBlank(remarks) &&
+                StringUtils.isNotBlank(createTime)){
+            dailyRecordQuery.createCriteria().andCreatTimeEqualTo(createTime);
         }
         List<DailyRecordDO> dailyRecordDOList = dailyRecordManager.selectByQuery(dailyRecordQuery);
         bizResult.setCode("1");
