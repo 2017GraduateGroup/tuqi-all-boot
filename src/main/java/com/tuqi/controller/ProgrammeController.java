@@ -221,13 +221,13 @@ public class ProgrammeController {
      * @return
      */
     @RequestMapping("getNoticeProgramme")
-    public BizResult getNoticeProgramme(){
+    public BizResult getNoticeProgramme(@RequestParam String userId){
         BizResult bizResult = new BizResult();
         Date nowTime = new Date();
         Long longTime = 5*60*1000L;
         Date closeTime = new Date(nowTime.getTime() + longTime);
         ProgrammeQuery programmeQuery = new ProgrammeQuery();
-        programmeQuery.createCriteria().andGmtCreateEqualTo(closeTime);
+        programmeQuery.createCriteria().andGmtCreateEqualTo(closeTime).andProgramUserIdEqualTo(Long.valueOf(userId));
         List<ProgrammeDO> programmeDOList = programmeManager.selectByQuery(programmeQuery);
         if(programmeDOList.size() > 0){
             bizResult.setCode("1");
